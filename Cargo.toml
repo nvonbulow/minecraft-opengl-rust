@@ -1,0 +1,9 @@
+[package]
+name = "mcgl"
+version = "0.1.0"
+authors = ["nvonbulow <nick@nvonbulow.com>"]
+
+[dependencies]
+glium = "*"
+image = "*"
+uuid = "0.5"
