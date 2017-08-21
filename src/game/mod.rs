@@ -4,9 +4,8 @@ use std::thread;
 use std::time::{Duration, Instant};
 
 mod camera;
-mod entity;
 mod renderer;
-
+mod world;
 
 #[derive(Copy, Clone)]
 pub struct GameState {
@@ -68,7 +67,7 @@ pub fn start() {
     start_loop(|| -> Action {
         let mut frame = display.draw();
         state.camera.update(frame.get_dimensions());
-        renderer.render_frame(&mut frame, &state);
+        renderer.render_frame(&mut frame, &mut state);
         frame.finish().unwrap();
 
         events_loop.poll_events(|event| {

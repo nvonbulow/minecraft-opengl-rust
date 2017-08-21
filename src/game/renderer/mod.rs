@@ -3,7 +3,8 @@ use glium::Surface;
 
 use ::game::GameState;
 
-mod shaders;
+pub mod chunk;
+pub mod shaders;
 
 #[derive(Copy, Clone)]
 pub struct Vertex {
@@ -31,7 +32,7 @@ impl<'a> GameRenderer<'a> {
         }
     }
 
-    pub fn render_frame(&mut self, frame: &mut glium::Frame, state: &GameState) {
+    pub fn render_frame(&mut self, frame: &mut glium::Frame, state: &mut GameState) {
         let model = [
             [1.0, 0.0, 0.0, 0.0],
             [0.0, 1.0, 0.0, 0.0],
@@ -83,10 +84,17 @@ impl<'a> GameRenderer<'a> {
             1, 3, 4u16
         ]).unwrap();
 
-        let test_shader = self.shaders.get_shader("test");
+        // let test_shader = self.shaders.get_shader("test");
+
+        let chunk = ::game::world::Chunk::new(0, 0);
 
         frame.clear_color_and_depth((0.0, 0.0, 1.0, 1.0), 1.0);
-        frame.draw((&positions, &normals), &indicies, test_shader, &uniforms, &params).unwrap();
+        chunk.draw(frame, self, state);
+        // frame.draw((&positions, &normals), &indicies, test_shader, &uniforms, &params).unwrap();
 
     }
+}
+
+pub trait Drawable {
+    fn draw(&self, frame: &mut glium::Frame, renderer: &mut GameRenderer, state: &mut GameState);
 }
